@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+	<script  src="https://code.jquery.com/jquery-3.3.1.js"  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="  crossorigin="anonymous"></script>
+	
+	<link rel="stylesheet" href="css/jquerym.css">
+	<script src="js/jquery.js" type="text/javascript"></script>
+	<script src="js/jquerym.js" type="text/javascript"></script>
+  
+	    <!-- FIREBASE -->
+	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase-messaging.js"></script>
+	
+	<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+	<!-- FIREBASE! -->
+	<script>
+		// Initialize Firebase
+		var config = {
+		apiKey: "AIzaSyBm8GWuEISFnROC5UEwCgRTce5-W77_wNs",
+		authDomain: "testauth-fc05c.firebaseapp.com",
+		databaseURL: "https://testauth-fc05c.firebaseio.com",
+		projectId: "testauth-fc05c",
+		storageBucket: "testauth-fc05c.appspot.com",
+		messagingSenderId: "48382055953"
+		};
+		var app = firebase.initializeApp(config);
+		
+		  // init firebase app
+		var database = app.database();
+		var auth = app.auth();
+		var storage = app.storage();
+		var databaseRef = database.ref().child('chat');
+
+	</script>
+	
+
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>Hello World</title>
+</head>
+
+<body>
+	<div id="pgLogin" data-role="page" data-theme="b" class="my-page">
+
+		<div id="login_div" class="main-div">
+			<h3>Auth Firebase</h3>
+			<input type="email" placeholder="email"/ id="login_email_field"><br />
+			<input type="password" placeholder="password" id="login_password_field"/>
+			
+			<input type="submit" value="login" id="form-login"/>
+		</div>
+		<hr />
+		<div id="register_div" class="main-div">
+			<h3>Register</h3>
+			<input type="email" placeholder="email"/ id="register_email_field"><br />
+			<input type="password" placeholder="password" id="register_password_field"/>
+			
+			<input type="submit" value="Register"  id="form-register"/>
+		</div>
+		
+		<div id="user_div" class="loggedin-div">
+			<h3>Welcome user</h3>
+			<p id="user_para"></p>
+			
+			<input type="submit" value="Logout"  id="form-logout1"/>
+		</div>
+
+	</div>
+	
+	<div id="pgMenu" data-role="page" data-theme="b" class="my-page">
+		<div id="pgMenucontent" data-role="content" class="content">
+		<ul data-role="listview" data-inset="true" id="sbItems">
+			<li data-icon="false"><a data-transition="slide" id="sbNote" href="#pgNote">
+				<h2>Travels</h2>
+				<p>Maintain Notes</p>
+				<img height="200" width="100%" src="img/apps80.png" alt="Notes" class="ui-li-thumb"></img></a></li>
+			<li data-icon="false" ><a style="pointer-events: none; cursor: default;" data-transition="slide" id="" href="#">
+				<h2></h2>
+				<p></p>
+				</a></li>
+			<li data-icon="false"><a id="form-logout2"/>
+				<h2>Log Out</h2>
+				<p>Exit App</p>
+				<img height="200" width="100%" src="img/error.png" alt="Clear" class="ui-li-thumb"></img></a></li>
+		</ul>
+		</div>
+	</div>
+	<!--	LIST	!-->
+	<div id="pgNote" data-role="page">
+		  <div class="identifier">
+          <span>
+            <font size="5">
+              <label for='username'><img src="https://www.gstatic.com/images/icons/material/system/1x/account_box_black_24dp.png" width="30"/></label>
+              <span id='username'></span>
+            </font>
+          </span>
+        </div>
+		<input type="text" id="inputtitle" placeholder="Title"/>
+		<input type="text" id="inputdescription" placeholder="Desc"/>
+		<input type="text" id="inputdate" placeholder="Date"/>
+		<input type="submit" id="senddatatofire" value="save"/>
+		
+		<aside class="sidebar">
+			<ul id='messages'></ul>
+		</aside>
+	</div>
+	<!--	LIST END	!-->
+	
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        //app.initialize();
+		
+		
+    </script>
+</body>
+
+</html>
